@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "components/TheHeader";
+import Header from "components/header/TheHeader";
 import UseStylesGlobal from "styles/useStyles";
 import { useTabletHook } from "hooks/isTablet";
 import SideBarGroup from "components/sideBar/TheSideBarGroup";
@@ -29,10 +29,10 @@ export default (props: IProps) => {
       {isTablet ? (
         <Footer navs={navIcons} />
       ) : (
-        <div className={classes.sizeBar}>
-          <SideBarGroup navs={navIcons} />
-        </div>
-      )}
+          <div className={classes.sizeBar}>
+            <SideBarGroup navs={navIcons} />
+          </div>
+        )}
     </div>
   );
 };
