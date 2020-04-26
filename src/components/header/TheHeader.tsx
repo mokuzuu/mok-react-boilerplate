@@ -1,52 +1,28 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import variables from "styles/variables";
-import { useTabletHook } from "hooks/isTablet";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { useLocation } from "react-router-dom";
-import { rootPages } from "App";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
+import { IAppState } from "store";
 
-const mapStateToProps = (state: any) => {
-  return {
-    routeName: state.app.routeName
-  };
-};
-interface IProps {
-  history: any;
-  routeName?: string;
-}
-export default connect(
-  mapStateToProps,
-  null
-)(
-  withRouter((props: IProps) => {
-    const classes = useStyles();
-    const isTablet = useTabletHook();
-    const location = useLocation();
-
-    return (
-      <header className={classes.header}>
-        {isTablet ? (
-          <div className={classes.mobileHeader}>
-            {rootPages.includes(location.pathname) ? (
-              <div className={classes.desktopHeader}>{props.routeName}</div>
-            ) : (
-              <div className={classes.backButtonWrapper}>
-                <ArrowBackIosIcon onClick={props.history.goBack} />
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className={classes.desktopHeader}>{props.routeName}</div>
+const TheHeader = () => {
+  const userName = useSelector((state: IAppState) => state.userName);
+  const classes = useStyles();
+  return (
+    <header className={classes.header}>
+      <div className={classes.desktopHeader}>
+        Chat room&nbsp;&nbsp;
+        {userName && (
+          <span style={{ fontWeight: 300, color: "grey" }}>
+            Welcome {userName}
+          </span>
         )}
-      </header>
-    );
-  })
-);
+      </div>
+    </header>
+  );
+};
+export default TheHeader;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   header: {
     width: variables.header.width,
     minHeight: variables.header.height,
@@ -58,27 +34,8 @@ const useStyles = makeStyles(theme => ({
     left: "0",
     borderBottom: "0.5px solid grey",
     background: variables.header.bgColor,
-    transition: "0.33s ease",
-    transformOrigin: "50% 0",
     flexDirection: "row",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: "180px"
-    }
-  },
-  mobileHeader: {
-    display: "flex",
-    height: "100%",
-    alignItems: "center",
-    paddingLeft: "12px"
-  },
-  backButtonWrapper: {
-    width: "28px",
-    height: "28px",
-    borderRadius: "50%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingLeft: "8px"
+    paddingLeft: "50px",
   },
   desktopHeader: {
     position: "relative",
@@ -86,6 +43,5 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     display: "flex",
     alignItems: "center",
-    marginLeft: "10px"
-  }
+  },
 }));

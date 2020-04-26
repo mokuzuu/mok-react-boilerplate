@@ -1,51 +1,55 @@
 import React from "react";
 import Header from "components/header/TheHeader";
 import UseStylesGlobal from "styles/useStyles";
-import { useTabletHook } from "hooks/isTablet";
-import SideBarGroup from "components/sideBar/TheSideBarGroup";
-import Footer from "components/footer/TheFooter";
 import { makeStyles } from "@material-ui/core";
 import variables from "styles/variables";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import { routes } from "routes";
+import { Box } from "@material-ui/core";
 interface IProps {
   children: JSX.Element;
 }
-const navIcons = [
-  {
-    title: "List",
-    to: routes.characters,
-    icon: <ListAltIcon />
-  }
-];
+
 export default (props: IProps) => {
   const globalClasses = UseStylesGlobal();
   const classes = useStyles();
-  const isTablet = useTabletHook();
   return (
     <div className={globalClasses.app}>
-      <Header />
-      <main className={classes.main}>{props.children}</main>
-      {isTablet ? (
-        <Footer navs={navIcons} />
-      ) : (
-          <div className={classes.sizeBar}>
-            <SideBarGroup navs={navIcons} />
-          </div>
-        )}
+      <Box
+        display="flex"
+        flexDirection="row"
+        position="relative"
+        width="100%"
+        height="100%"
+      >
+        <Box
+          className={classes.mainContainer}
+          display="flex"
+          flexDirection="column"
+          flexGrow={1}
+          position="relative"
+        >
+          <Box flexBasis={variables.header.height} flexGrow={0} flexShrink={0}>
+            <Header />
+          </Box>
+          <Box flexBasis={"auto"} flexGrow={1} flexShrink={0}>
+            <main className={classes.main}>{props.children}</main>
+          </Box>
+        </Box>
+      </Box>
     </div>
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   main: {
-    paddingTop: variables.header.height,
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: "180px"
-    },
-    [theme.breakpoints.down("xs")]: {
-      marginBottom: variables.footer.height
-    }
+    width: "100%",
+    height: "100%",
+  },
+  sideBarContainer: {
+    flexBasis: "180px",
+  },
+  mainContainer: {
+    flexBasis: "auto",
+    flexGrow: 1,
   },
   sizeBar: {
     zIndex: variables.zIndex.sideBar,
@@ -56,6 +60,6 @@ const useStyles = makeStyles(theme => ({
     top: "0px",
     margin: "0",
     padding: "0",
-    backgroundColor: variables.color.primary
-  }
+    backgroundColor: variables.color.primary,
+  },
 }));

@@ -4,7 +4,8 @@ import App from "./App";
 import "styles/index.css";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
-
+import "typeface-roboto";
+import "services/firebase";
 ReactDOM.render(
   <BrowserRouter>
     <App />
